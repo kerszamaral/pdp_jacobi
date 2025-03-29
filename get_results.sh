@@ -34,6 +34,12 @@ echo "Input1 Input2 Execution_Time_Seq(s) Execution_Time_MP(s) Threads" > "$outp
 
 export OMP_PROC_BIND=true
 
+# Intel VTune Profiler CLI
+# performance-snapshot, hotspots and/or hpc-performance
+# vtune -collect performance-snapshot hotspots hpc-performance -r my_results -- ./laplace_seqa
+# vtune -collect hotspots -r $vtune_output -- ./laplace_seq
+# https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/2024-0/command-line-interface.html
+
 # Executa os testes sequenciais e salva os resultados
 for pair in "${input_pairs[@]}"; do
     echo "Running laplace_seq with input: $pair"
