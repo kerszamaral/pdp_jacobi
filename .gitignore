@@ -34,4 +34,5 @@
 #Images
 *.png
 laplace_seq
+laplace_mp
 *.csv

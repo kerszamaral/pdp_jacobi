@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
+#include <omp.h>
 
 #define CONV_THRESHOLD 1.0e-5f // threshold of convergence
 
@@ -78,7 +79,7 @@ int main(int argc, char *argv[]){
         _ = fscanf(stdin, "%d", &iter_max_num);
     }
 
-    
+    omp_get_wtime();
     int hasError = 1;
     int iter = 0;
 
