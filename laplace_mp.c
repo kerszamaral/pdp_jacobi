@@ -76,7 +76,7 @@ int main(int argc, char *argv[]){
         size = atoi(argv[1]);
         iter_max_num = atoi(argv[2]);
     } else {
-        int _ = 0;
+        __attribute_maybe_unused__ int _ = 0;
         _ = fscanf(stdin, "%d", &size);
         _ = fscanf(stdin, "%d", &iter_max_num);
     }
@@ -84,8 +84,8 @@ int main(int argc, char *argv[]){
     int hasError = 1;
     int iter = 0;
 
-    struct timeval time_start;
-    struct timeval time_end;
+    __attribute_maybe_unused__ struct timeval time_start;
+    __attribute_maybe_unused__ struct timeval time_end;
 
     // allocate memory to the grid (matrix)
     allocate_memory();

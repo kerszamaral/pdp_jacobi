@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-O3
+FLAGS=-O3 -Wall -Wextra -Wpedantic
 EXEC=laplace_seq laplace_mp
 
 all: $(EXEC)
