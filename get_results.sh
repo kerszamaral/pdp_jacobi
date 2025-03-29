@@ -4,7 +4,27 @@
 declare -a input_pairs=("512 1000" "1024 1000" "1024 2000" "1024 10000")
 
 # Lista de números de threads para OpenMP (modifique conforme necessário)
-declare -a num_threads_list=(1 2 4 8)
+real_threads=$(nproc --all)
+max_threads=$(awk "function ceil(x){return int(x)+(x>int(x))} BEGIN {print ceil($real_threads*1.5)}")
+echo "Max threads: $max_threads - Real threads: $real_threads"
+# Verifica se o número máximo de threads é maior que 0
+if [ $max_threads -le 0 ]; then
+    echo "Error: No available threads."
+    exit 1
+fi
+
+# seq FIRST STEP LAST
+declare -a num_threads_list=(
+    $(seq 2 4 $max_threads)
+    $real_threads
+    $(expr $real_threads / 2)
+    $(expr $real_threads - 1)
+    $(expr $real_threads + 1)
+    $(expr $real_threads / 2 + 1)
+    $(expr $real_threads / 2 - 1)
+)
+declare -a num_threads_list=($(printf '%s\n' "${num_threads_list[@]}" | sort -nu)) # Remove duplicates and sort
+echo "Num threads list: ${num_threads_list[@]}"
 
 # Nome do arquivo de saída
 output_file="execution_times.txt"
