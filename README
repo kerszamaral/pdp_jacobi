@@ -1,0 +1,18 @@
+# Implementação Paralela em OpenMP
+
+Este repositório contém a implementação paralela de um algoritmo utilizando OpenMP, como parte do trabalho da disciplina de Programação Distribuída e Paralela do Instituto de Informática - UFRGS.
+
+## Transferência de Arquivos
+### Da máquina pessoal para o PCAD (a partir da máquina pessoal):
+```sh
+rsync --verbose --progress --recursive <diretório_origem> <usuario_no_pcad>@gppd-hpc.inf.ufrgs.br:~/<diretório_destino>
+```
+### Do PCAD para a máquina pessoal (a partir da máquina pessoal):
+```sh
+rsync --verbose --progress --recursive <usuario_no_pcad>@gppd-hpc.inf.ufrgs.br:~/<diretório_origem> <diretório_destino>
+```
+### Do PCAD para a máquina pessoal (a partir do PCAD):
+```sh
+rsync --verbose --progress --recursive <diretório_origem> <usuario_na_sua_maquina>@<maquina_pessoal>:~/<diretório_destino>
+```
+
