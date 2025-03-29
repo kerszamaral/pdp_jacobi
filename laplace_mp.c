@@ -42,9 +42,11 @@ void allocate_memory(){
 
 // initialize the grid
 void initialize_grid(){
-    int center = size / 2;
-    int linf = center - (size / 10);
-    int lsup = center + (size / 10);
+    const int center = size / 2;
+    const int linf = center - (size / 10);
+    const int lsup = center + (size / 10);
+
+    #pragma omp parallel for collapse(2)
     for (int i = 0; i < size; i++){
         for (int j = 0; j < size; j++){
             // inicializa região de calor no centro do grid
@@ -79,7 +81,6 @@ int main(int argc, char *argv[]){
         _ = fscanf(stdin, "%d", &iter_max_num);
     }
 
-    omp_get_wtime();
     int hasError = 1;
     int iter = 0;
 
@@ -104,7 +105,8 @@ int main(int argc, char *argv[]){
 
         hasError = 0;
         // calculates the Laplace equation to determine each cell's next value
-        for( int i = 1; i < size-1; i++) {
+        #pragma omp parallel for collapse(2) shared(hasError) schedule(auto)
+        for(int i = 1; i < size-1; i++) {
             for(int j = 1; j < size-1; j++) {
 
                 new_grid[i][j] = 0.25 * (grid[i][j+1] + grid[i][j-1] +
@@ -115,8 +117,10 @@ int main(int argc, char *argv[]){
                     hasError = 1;                                        
                 }     
             }
-        }            
+        }
+
         // copie the next values into the working array for the next iteration
+        #pragma omp parallel for collapse(2)
         for( int i = 1; i < size-1; i++) {
             for( int j = 1; j < size-1; j++) {
                 grid[i][j] = new_grid[i][j];
