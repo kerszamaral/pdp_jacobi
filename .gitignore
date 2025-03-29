@@ -37,3 +37,8 @@ laplace_seq
 laplace_mp
 *.txt
 *.csv
+
+# Others
+.prog_in
+out/
+vtune_out/

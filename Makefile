@@ -24,4 +24,4 @@ plot: $(EXEC)
 	python3 ./plot_results.py
 
 clean:
-	rm -f laplace_seq *.o *.png laplace_mp *.txt
+	rm -rf laplace_seq *.o *.png laplace_mp *.txt ./out ./vtune_out
