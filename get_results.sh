@@ -12,6 +12,8 @@ output_file="execution_times.txt"
 # Limpa o arquivo antes de escrever novos dados
 echo "Input1 Input2 Execution_Time_Seq(s) Execution_Time_MP(s) Threads" > "$output_file"
 
+export OMP_PROC_BIND=true
+
 # Executa os testes sequenciais e salva os resultados
 for pair in "${input_pairs[@]}"; do
     echo "Running laplace_seq with input: $pair"
