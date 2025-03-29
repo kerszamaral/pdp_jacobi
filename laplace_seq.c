@@ -69,8 +69,14 @@ void save_grid(){
 
 int main(int argc, char *argv[]){
 
-    fscanf(stdin, "%d", &size);
-    fscanf(stdin, "%d", &iter_max_num);
+    if (argc == 3) {
+        size = atoi(argv[1]);
+        iter_max_num = atoi(argv[2]);
+    } else {
+        fscanf(stdin, "%d", &size);
+        fscanf(stdin, "%d", &iter_max_num);
+    }
+
     
     int hasError = 1;
     int iter = 0;

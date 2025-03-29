@@ -1,8 +1,11 @@
 CC=gcc
-FLAGS=-O3 
+FLAGS=-O3
 EXEC=laplace_seq
 
 all: $(EXEC)
+
+gprof: FLAGS += -pg
+gprof: $(EXEC)
 
 $(EXEC):
 	$(CC) $(FLAGS) $(EXEC).c   -c -o $(EXEC).o
