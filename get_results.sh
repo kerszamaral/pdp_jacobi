@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Lista de pares de entrada
-declare -a input_pairs=("512 1000" "1024 1000" "1024 2000" "1024 10000")
+declare -a input_pairs=("512 1000" "1024 1000" "1024 2000" "1024 10000" "2028 15000")
 
 # Lista de números de threads para OpenMP (modifique conforme necessário)
 real_threads=$(nproc --all)
