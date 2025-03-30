@@ -71,12 +71,16 @@ for pair in "${input_pairs[@]}"; do
         vtune_output_hs="${vtune_output}_hs"
         vtune_output_ps="${vtune_output}_ps"
         # Launches the analysis tool with the process ID
-        vtune -collect hotspots -r $vtune_output_hs -target-pid $ppid &
+        vtune -collect hotspots -r $vtune_output_hs -target-pid $ppid &> hs.out &
         hspid=$!
-        vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &
+        vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &> hpc.out &
         hpcpid=$!
-        vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &
+        vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &> ps.out &
         pspid=$!
+        
+        while [[ -z $(grep "Collection started" hs.out) ]] || [[ -z $(grep "Collection started" hpc.out) ]] || [[ -z $(grep "Collection started" ps.out) ]]; do
+            sleep 0.1  # Os processos do VTune podem demorar para iniciar
+        done
     fi
 
     # Aguarda o processo em segundo plano ser iniciado
@@ -84,6 +88,7 @@ for pair in "${input_pairs[@]}"; do
     echo "$pair" > $prog_stdin
     wait $ppid
     end_time=$(date +%s.%N)
+
     # Aguarda o VTune terminar
     if [ $VTUNE_ACTIVE -eq 1 ]; then
         wait $hspid
@@ -122,12 +127,16 @@ for num_threads in "${num_threads_list[@]}"; do
             vtune_output_hs="${vtune_output}_hs"
             vtune_output_ps="${vtune_output}_ps"
             # Launches the analysis tool with the process ID
-            vtune -collect hotspots -r $vtune_output_hs -target-pid $ppid &
+            vtune -collect hotspots -r $vtune_output_hs -target-pid $ppid &> hs.out &
             hspid=$!
-            vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &
+            vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &> hpc.out &
             hpcpid=$!
-            vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &
+            vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &> ps.out &
             pspid=$!
+
+            while [[ -z $(grep "Collection started" hs.out) ]] || [[ -z $(grep "Collection started" hpc.out) ]] || [[ -z $(grep "Collection started" ps.out) ]]; do
+                sleep 0.1  # Os processos do VTune podem demorar para iniciar
+            done
         fi
 
         # Aguarda o processo em segundo plano ser iniciado
@@ -135,6 +144,7 @@ for num_threads in "${num_threads_list[@]}"; do
         echo "$pair" > $prog_stdin
         wait $ppid
         end_time=$(date +%s.%N)
+
         # Aguarda o VTune terminar
         if [ $VTUNE_ACTIVE -eq 1 ]; then
             wait $hspid
