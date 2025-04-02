@@ -28,7 +28,6 @@ declare -a num_threads_list=(
 )
 declare -a num_threads_list=($(printf '%s\n' "${num_threads_list[@]}" | sort -nu)) # Remove duplicates and sort
 echo "Num threads list: ${num_threads_list[@]}"
-exit 0
 
 # Nome do arquivo de saída
 output_file="execution_times.txt"
@@ -43,7 +42,7 @@ if [ -p $prog_stdin ]; then
     rm $prog_stdin
 fi
 
-VTUNE_ACTIVE=0
+VTUNE_ACTIVE=1
 vtune_out="./vtune_out/"
 # Intel VTune Profiler CLI
 # performance-snapshot, hotspots and/or hpc-performance
@@ -77,12 +76,14 @@ for pair in "${input_pairs[@]}"; do
         # Launches the analysis tool with the process ID
         vtune -collect hotspots -r $vtune_output_hs -target-pid $ppid &> hs.out &
         hspid=$!
-        vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &> hpc.out &
-        hpcpid=$!
-        vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &> ps.out &
-        pspid=$!
+        # vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &> hpc.out &
+        # hpcpid=$!
+        # vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &> ps.out &
+        # pspid=$!
         
-        while [[ -z $(grep "Collection started" hs.out) ]] || [[ -z $(grep "Collection started" hpc.out) ]] || [[ -z $(grep "Collection started" ps.out) ]]; do
+        while [[ -z $(grep "Collection started" hs.out) ]]; do
+            # || [[ -z $(grep "Collection started" hpc.out) ]]
+            # || [[ -z $(grep "Collection started" ps.out) ]]
             sleep 0.1  # Os processos do VTune podem demorar para iniciar
         done
     fi
@@ -96,8 +97,8 @@ for pair in "${input_pairs[@]}"; do
     # Aguarda o VTune terminar
     if [ $VTUNE_ACTIVE -eq 1 ]; then
         wait $hspid
-        wait $hpcpid
-        wait $pspid
+        # wait $hpcpid
+        # wait $pspid
     fi
 
     # Remove o pipe
@@ -133,12 +134,14 @@ for num_threads in "${num_threads_list[@]}"; do
             # Launches the analysis tool with the process ID
             vtune -collect hotspots -r $vtune_output_hs -target-pid $ppid &> hs.out &
             hspid=$!
-            vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &> hpc.out &
-            hpcpid=$!
-            vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &> ps.out &
-            pspid=$!
+            # vtune -collect hpc-performance -r $vtune_output_hpc -target-pid $ppid &> hpc.out &
+            # hpcpid=$!
+            # vtune -collect performance-snapshot -r $vtune_output_ps -target-pid $ppid &> ps.out &
+            # pspid=$!
 
-            while [[ -z $(grep "Collection started" hs.out) ]] || [[ -z $(grep "Collection started" hpc.out) ]] || [[ -z $(grep "Collection started" ps.out) ]]; do
+            while [[ -z $(grep "Collection started" hs.out) ]]; do
+                # || [[ -z $(grep "Collection started" hpc.out) ]]
+                # || [[ -z $(grep "Collection started" ps.out) ]]
                 sleep 0.1  # Os processos do VTune podem demorar para iniciar
             done
         fi
@@ -152,8 +155,8 @@ for num_threads in "${num_threads_list[@]}"; do
         # Aguarda o VTune terminar
         if [ $VTUNE_ACTIVE -eq 1 ]; then
             wait $hspid
-            wait $hpcpid
-            wait $pspid
+            # wait $hpcpid
+            # wait $pspid
         fi
 
         # Remove o pipe
