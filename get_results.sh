@@ -71,6 +71,7 @@ if [ ! -d "$out_dir" ]; then
     mkdir $out_dir
 fi
 
+overall_start=$(date +%s.%N)
 # Executa os testes sequenciais e salva os resultados
 for pair in "${input_pairs[@]}"; do
     echo "Running laplace_seq with input: $pair"
@@ -86,11 +87,14 @@ for pair in "${input_pairs[@]}"; do
         # Executa o programa em segundo plano
         ./laplace_seq $pair &> $out_file
     fi
+    ext_code=$?
     end_time=$(date +%s.%N)
 
     # Calcula o tempo de execução
     exec_time_seq=$(echo "$end_time - $start_time" | bc)
     echo "$pair $exec_time_seq"
+    elapsed=$(echo "$end_time - $overall_start" | bc)
+    echo "Time elapsed: $elapsed seconds, exit code: $ext_code"
     echo "$pair $exec_time_seq" >> "$output_file"
 done
 
@@ -114,11 +118,14 @@ for num_threads in "${num_threads_list[@]}"; do
             # Executa o programa em segundo plano
             ./laplace_mp $pair &> $out_file
         fi
+        ext_code=$?
         end_time=$(date +%s.%N)
 
         # Calcula o tempo de execução
         exec_time_mp=$(echo "$end_time - $start_time" | bc)
         echo "$pair $exec_time_mp"
+        elapsed=$(echo "$end_time - $overall_start" | bc)
+        echo "Time elapsed: $elapsed seconds, exit code: $ext_code"
 
         # Atualiza o arquivo com o tempo de execução paralelo
         # Procurando a linha correspondente ao par de entrada para adicionar o tempo MP
@@ -127,3 +134,5 @@ for num_threads in "${num_threads_list[@]}"; do
 done
 
 echo "Results saved in $output_file"
+elapsed=$(echo "$(date +%s.%N) - $overall_start" | bc)
+echo "Time ended: $elapsed seconds"
