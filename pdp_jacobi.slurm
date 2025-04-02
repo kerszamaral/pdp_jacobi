@@ -17,7 +17,7 @@ git clone --depth 1 https://github.com/kerszamaral/pdp_jacobi.git ./pdp_run
 cd ./pdp_run
 make clean 
 make
-./gen_results.sh
+time ./get_results.sh &> out.txt
 touch save.tgz
 tar cvzf save.tgz --exclude=save.tgz --exclude=.git . || rm save.tgz
 mv save.tgz $SAVE_DIR
