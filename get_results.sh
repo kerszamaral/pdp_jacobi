@@ -26,16 +26,23 @@ fi
 declare -a num_threads_list=(
     #$(seq 2 4 $max_threads)
     $(awk "BEGIN { for (i = 2; i <= $max_threads; i*=2) print i }")
-    $real_threads
-    $(expr $real_threads / 2)
-    $(expr $real_threads - 1)
-    $(expr $real_threads + 1)
-    $(expr $real_threads / 2 + 1)
     $(expr $real_threads / 2 - 1)
+    $(expr $real_threads / 2)
+    $(expr $real_threads / 2 + 1)
+    $(expr $real_threads - 1)
+    $real_threads
+    $(expr $real_threads + 1)
     $max_threads
 )
 declare -a num_threads_list=($(printf '%s\n' "${num_threads_list[@]}" | sort -nu)) # Remove duplicates and sort
 echo "Num threads list: ${num_threads_list[@]}"
+
+len_input_pairs=${#input_pairs[@]}
+len_num_threads=${#num_threads_list[@]}
+longest_time="6*60"
+prob_max_time=$(awk "BEGIN { print $len_input_pairs * ($len_num_threads + 1) * $longest_time }")
+
+echo "Maximum probable time for the test is: $prob_max_time seconds"
 
 # Nome do arquivo de saída
 output_file="execution_times.txt"
