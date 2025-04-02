@@ -74,6 +74,7 @@ fi
 overall_start=$(date +%s.%N)
 # Executa os testes sequenciais e salva os resultados
 for pair in "${input_pairs[@]}"; do
+    echo ""
     echo "Running laplace_seq with input: $pair"
     out_file="$out_dir/laplace_seq_${pair// /_}.txt"
     # Executa o VTune em segundo plan
@@ -103,6 +104,7 @@ for num_threads in "${num_threads_list[@]}"; do
     export OMP_NUM_THREADS=$num_threads  # Define o número de threads do OpenMP
     
     for pair in "${input_pairs[@]}"; do
+        echo ""
         echo "Running laplace_mp with input: $pair and $num_threads threads"
         # Cria o pipe para a entrada padrão
         out_file="$out_dir/laplace_mp_${pair// /_}_$num_threads.txt"
@@ -133,6 +135,7 @@ for num_threads in "${num_threads_list[@]}"; do
     done
 done
 
+echo ""
 echo "Results saved in $output_file"
 elapsed=$(echo "$(date +%s.%N) - $overall_start" | bc)
 echo "Time ended: $elapsed seconds"
