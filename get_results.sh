@@ -17,7 +17,7 @@ fi
 # seq FIRST STEP LAST
 declare -a num_threads_list=(
     #$(seq 2 4 $max_threads)
-    $(awk "BEGIN { for (i = 1; i <= $max_threads; i*=2) print i }")
+    $(awk "BEGIN { for (i = 2; i <= $max_threads; i*=2) print i }")
     $real_threads
     $(expr $real_threads / 2)
     $(expr $real_threads - 1)
