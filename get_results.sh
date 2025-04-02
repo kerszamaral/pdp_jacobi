@@ -48,8 +48,8 @@ if [ -p $prog_stdin ]; then
     rm $prog_stdin
 fi
 
-VTUNE_ACTIVE=0
-vtune_type="hotspots"
+VTUNE_ACTIVE=1
+vtune_type="hpc-performance"
 vtune_out="./vtune_out/"
 # Intel VTune Profiler CLI
 # performance-snapshot, hotspots and/or hpc-performance
@@ -72,7 +72,7 @@ for pair in "${input_pairs[@]}"; do
         # Executa o VTune em segundo plano
         vtune_output="$vtune_out/vtune_${pair// /_}_seq"
         # Launches the analysis tool with the process
-        vtune -collect $vtune_type -r $vtune_output ./laplace_seq -- $pair &> $out_file
+        vtune -collect $vtune_type -r $vtune_output ./laplace_seq $pair &> $out_file
     else
         # Executa o programa em segundo plano
         ./laplace_seq $pair &> $out_file
@@ -100,7 +100,7 @@ for num_threads in "${num_threads_list[@]}"; do
             # Executa o VTune em segundo plano
             vtune_output="$vtune_out/vtune_${pair// /_}_mp_${num_threads}"
             # Launches the analysis tool with the process
-            vtune -collect $vtune_type -r $vtune_output ./laplace_mp -- $pair &> $out_file
+            vtune -collect $vtune_type -r $vtune_output ./laplace_mp $pair &> $out_file
         else
             # Executa o programa em segundo plano
             ./laplace_mp $pair &> $out_file
