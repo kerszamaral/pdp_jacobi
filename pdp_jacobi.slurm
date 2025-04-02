@@ -12,12 +12,12 @@ SAVE_DIR=$HOME
 EXEC_DIR=$SCRATCH
 cd $EXEC_DIR
 export OMP_PROC_BIND=true
-rm -rf pdp_run
+rm -rf ./pdp_run
 git clone --depth 1 https://github.com/kerszamaral/pdp_jacobi.git ./pdp_run
-cd pdp_run
+cd ./pdp_run
 make clean 
 make
-time ./gen_results.sh &> out.txt
+./gen_results.sh
 touch save.tgz
 tar cvzf save.tgz --exclude=save.tgz --exclude=.git . || rm save.tgz
 mv save.tgz $SAVE_DIR
