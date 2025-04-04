@@ -3,12 +3,21 @@
 # Lista de pares de entrada
 declare -a input_pairs=(
     "512 1000"
+    "512 2000"
+    "512 10000"
+    "512 15000"
     "1024 1000"
     "1024 2000"
     "1024 10000"
+    "1024 15000"
     "2048 1000"
+    "2048 2000"
     "2048 10000"
-    "2028 15000"
+    "2048 15000"
+    "4096 1000"
+    "4096 2000"
+    "4096 10000"
+    "4096 15000"
 )
 
 # Lista de números de threads para OpenMP (modifique conforme necessário)
