@@ -29,13 +29,6 @@ def plot_speedup_agrupado():
 
             grupos[parte1].append((entrada_nome, tempo_sequencial, list(zip(threads, tempos))))
 
-            grupos = {
-                '500': [],
-                '1000': [],
-                '2000': [],
-                '4000': []
-            }
-
     for grupo, entradas in grupos.items():
         plt.figure(figsize=(10, 6))
         
