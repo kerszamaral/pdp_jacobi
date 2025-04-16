@@ -42,3 +42,4 @@ laplace_mp
 .prog_in
 out/
 vtune_out/
+.vscode/
