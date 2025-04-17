@@ -17,6 +17,9 @@ git clone --depth 1 https://github.com/kerszamaral/pdp_jacobi.git ./pdp_run
 cd ./pdp_run
 make clean 
 make
+export VTUNE_ACTIVE=1
+time ./get_results.sh 2>&1 >$SAVE_DIR/vtune_pdp_jacobi_slurm.log | tee  -a $SAVE_DIR/vtune_pdp_jacobi_slurm.log > ./vtune_pdp_jacobi_slurm.log
+export VTUNE_ACTIVE=""
 time ./get_results.sh 2>&1 >$SAVE_DIR/pdp_jacobi_slurm.log | tee  -a $SAVE_DIR/pdp_jacobi_slurm.log > ./pdp_jacobi_slurm.log
 touch save.tgz
 tar cvzf save.tgz --exclude=save.tgz --exclude=.git . || rm save.tgz

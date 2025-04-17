@@ -65,8 +65,13 @@ prog_stdin="./.prog_in"
 if [ -p $prog_stdin ]; then
     rm $prog_stdin
 fi
+if [ -z $VTUNE_ACTIVE ]; then
+    VTUNE_ACTIVE=0
+else
+    VTUNE_ACTIVE=1
+fi
+echo "VTune active: $VTUNE_ACTIVE"
 
-VTUNE_ACTIVE=1
 vtune_type="hpc-performance"
 vtune_out="./vtune_out/"
 # Intel VTune Profiler CLI
@@ -75,7 +80,11 @@ vtune_out="./vtune_out/"
 # vtune -collect hotspots -r $vtune_output -- ./laplace_seq
 # https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/2024-0/command-line-interface.html
 
+if [ -z $VTUNE_OUT ]; then
+out_dir="./out_vtune"
+else
 out_dir="./out"
+fi
 if [ ! -d "$out_dir" ]; then
     mkdir $out_dir
 fi
