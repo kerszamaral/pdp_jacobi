@@ -102,10 +102,9 @@ int main(int argc, char *argv[]){
     // This loop will end if either the maximum change reaches below a set threshold (convergence)
     // or a fixed number of maximum iterations have completed
     while ( hasError && iter < iter_max_num ) {
-
         hasError = 0;
         // calculates the Laplace equation to determine each cell's next value
-        #pragma omp parallel for collapse(2) shared(hasError) schedule(auto)
+        #pragma omp parallel for collapse(2) reduction(max : hasError) schedule(auto)
         for(int i = 1; i < size-1; i++) {
             for(int j = 1; j < size-1; j++) {
 
