@@ -59,7 +59,8 @@ output_file="execution_times.txt"
 # Limpa o arquivo antes de escrever novos dados
 echo "Input1 Input2 Execution_Time_Seq(s) Execution_Time_MP(s) Threads" > "$output_file"
 
-export OMP_PROC_BIND=true
+# Disabldd here to be eneabled in the slurm script
+# export OMP_PROC_BIND=true
 
 prog_stdin="./.prog_in"
 if [ -p $prog_stdin ]; then
@@ -80,7 +81,7 @@ vtune_out="./vtune_out/"
 # vtune -collect hotspots -r $vtune_output -- ./laplace_seq
 # https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/2024-0/command-line-interface.html
 
-if [ -z $VTUNE_OUT ]; then
+if [ $VTUNE_ACTIVE -eq 1 ]; then
 out_dir="./out_vtune"
 else
 out_dir="./out"
