@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from pathlib import Path
 
 
@@ -30,6 +31,14 @@ def clean_folder(folder: Path) -> None:
         print(f"Cleaned {file} and saved to {new_file}")
         
 if __name__ == "__main__":
-    folder = Path("out")
+    parser = ArgumentParser(description="Argument parser")
+    parser.add_argument("--folder", "-f",
+                        nargs="?",
+                        type=Path,
+                        default=Path("out"),
+                        help="The folder to clean"
+    )
+    parsed = parser.parse_args()
+    folder: Path = parsed.folder
     clean_folder(folder)
     print("Cleaning completed.")

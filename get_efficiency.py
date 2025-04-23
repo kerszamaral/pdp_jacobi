@@ -1,4 +1,5 @@
 from pathlib import Path
+from argparse import ArgumentParser
 
 def get_percentage(string: str) -> str:
     """
@@ -47,6 +48,13 @@ def gen_efficiency(folder: Path, outfile: Path):
         print(f"Efficiency data written to {outfile}")
 
 if __name__ == "__main__":
-    folder = Path("vtune_results")
+    parser = ArgumentParser()
+    parser.add_argument("--folder", "-f",
+                        nargs="?",
+                        type=Path,
+                        default=Path("vtune_results"),
+                        )
+    parsed = parser.parse_args()
+    folder: Path = parsed.folder
     outfile = Path("efficiency.txt")
     gen_efficiency(folder, outfile)
